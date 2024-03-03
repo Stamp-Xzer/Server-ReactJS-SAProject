@@ -57,9 +57,7 @@ app.post("/login", function (req, res) {
 });
 
 app.post("/courses", function (req, res) {
-  const categoryID = req.body.categoryID; // รับค่า categoryID จาก dropdown
-
-  // ค้นหาชื่อหมวดหมู่ (CategoryName) จากตาราง categories
+  const categoryID = req.body.categoryID;
   db.query(
     "SELECT courses.*, categories.CategoryName FROM courses JOIN categories ON courses.categoryID = categories.categoryID WHERE courses.categoryID = ?",
     [categoryID],
