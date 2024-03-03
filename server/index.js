@@ -27,7 +27,6 @@ app.post("/create", function (req, res) {
     [StudentID, Email, Password, f_name, l_name, Marjor, Faculty],
     (err, result) => {
       if (err) {
-        console.log("aaaa" + err);
       } else {
         res.send("Values Inserted");
       }
@@ -40,12 +39,10 @@ app.post("/login", function (req, res) {
 
   db.query("SELECT * FROM student WHERE email = ?", [email], (err, result) => {
     if (err) {
-      console.log(err);
       res.status(500).json({ error: "An internal server error occurred" });
     } else {
       if (result.length > 0) {
         res.status(200).json({ message: "Login successful", result: result });
-        // console.log(result);
       } else {
         res.status(401).json({ error: "Invalid email or password" });
       }
@@ -62,7 +59,6 @@ app.post("/courses", function (req, res) {
     [categoryID],
     function (err, result) {
       if (err) {
-        console.log(err);
         res.status(500).json({ error: "An internal server error occurred" });
       } else {
         if (result.length > 0) {
@@ -103,7 +99,6 @@ app.post("/sub_student", function (req, res) {
     [StudentID],
     function (err, result) {
       if (err) {
-        console.log(err);
         res.status(500).json({ error: "An internal server error occurred" });
       } else {
         if (result.length > 0) {
@@ -123,7 +118,6 @@ app.get("/student", function (req, res) {
     [email],
     function (err, result) {
       if (err) {
-        console.log(err);
         res.status(500).json({ error: "An internal server error occurred" });
       } else {
         if (result.length > 0) {
@@ -144,7 +138,6 @@ app.delete("/del_sub_from", function (req, res) {
     [StudentID, CourseID],
     function (err, result) {
       if (err) {
-        console.log(err);
         res.status(500).json({ error: "An internal server error occurred" });
       } else {
         if (result.affectedRows > 0) {
@@ -168,7 +161,6 @@ app.put("/update_student/:StudentID", function (req, res) {
     [UpdatedData, StudentID],
     function (err, result) {
       if (err) {
-        console.log(err);
         res.status(500).json({ error: "An internal server error occurred" });
       } else {
         if (result.affectedRows > 0) {
