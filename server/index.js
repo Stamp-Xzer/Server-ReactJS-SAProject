@@ -87,7 +87,7 @@ app.post("/add_sub", function (req, res) {
     [StudentID, CourseID, Semester],
     (err, result) => {
       if (err) {
-        console.log("aaaa" + err);
+        res.send("ERROR: " + err.message);
       } else {
         res.send("Values Inserted");
       }
@@ -128,6 +128,53 @@ app.get("/student", function (req, res) {
       } else {
         if (result.length > 0) {
           res.status(200).json(result[0]); // Return only the first matching student
+        } else {
+          res.status(404).json({ error: "Student not found" });
+        }
+      }
+    }
+  );
+});
+
+app.delete("/del_sub_from", function (req, res) {
+  const StudentID = req.body.stu_id; // รับค่า StudentID จาก dropdown
+  const CourseID = req.body.c_id; // รับค่า CourseID จาก dropdown
+  db.query(
+    "DELETE FROM subjectregistrations WHERE StudentID = ? AND CourseID = ?",
+    [StudentID, CourseID],
+    function (err, result) {
+      if (err) {
+        console.log(err);
+        res.status(500).json({ error: "An internal server error occurred" });
+      } else {
+        if (result.affectedRows > 0) {
+          res
+            .status(200)
+            .json({ message: "Subject registration deleted successfully" });
+        } else {
+          res.status(404).json({ error: "Subject registration not found" });
+        }
+      }
+    }
+  );
+});
+
+app.put("/update_student/:StudentID", function (req, res) {
+  const UpdatedData = req.body; // รับข้อมูลที่ต้องการอัปเดตมาจากคำขอ
+  const StudentID = req.params.StudentID; // รับ StudentID จาก URL
+
+  db.query(
+    "UPDATE student SET ? WHERE StudentID = ?",
+    [UpdatedData, StudentID],
+    function (err, result) {
+      if (err) {
+        console.log(err);
+        res.status(500).json({ error: "An internal server error occurred" });
+      } else {
+        if (result.affectedRows > 0) {
+          res
+            .status(200)
+            .json({ message: "Student data updated successfully" });
         } else {
           res.status(404).json({ error: "Student not found" });
         }
