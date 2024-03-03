@@ -42,7 +42,13 @@ app.post("/login", function (req, res) {
       res.status(500).json({ error: "An internal server error occurred" });
     } else {
       if (result.length > 0) {
-        res.status(200).json({ message: "Login successful", result: result });
+        const user = result[0];
+        // console.log(user.Password);
+        if (password === user.Password) {
+          res.status(200).json({ message: "Login successful", result: result });
+        } else {
+          res.status(401).json({ error: "Invalid email or password" });
+        }
       } else {
         res.status(401).json({ error: "Invalid email or password" });
       }
